@@ -1,61 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday 🎉</title>
-  <style>
-    
-body {
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  font-family: 'Segoe UI', sans-serif;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🎂</title>
 
-.card {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 350px;
-}
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: black;
+  }
 
-h1 {
-  color: #ff4d6d;
-}
+  /* Background slideshow */
+  .slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.8s ease;
+  }
 
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #ff4d6d;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
+  .center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* ✅ center everything */
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  h1 {
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px black;
+    text-align: center;
+  }
+
+  button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  /* Cake Scene */
+  .scene {
+    display: none;
+    position: relative;
+    width: 280px;
+    height: 340px;
+    margin-top: 10px;
+  }
+
+  .cake {
+    width: 200px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%); /* ✅ center cake */
+  }
+
+  .knife {
+    width: 120px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* ✅ center knife */
+    cursor: grab;
+    z-index: 5;
+  }
+
+  /* Confetti */
+  .confetti {
+    position: fixed;
+    top: -10px;
+    opacity: 0.9;
+    animation: fall linear forwards;
+    z-index: 999;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Quote box */
+  .quote {
+    display: none;
+    max-width: 90vw;          /* ✅ flexible width */
+    width: 320px;
+    background: rgba(0, 0, 0, 0.55);
+    color: white;
+    padding: 20px;
+    border-radius: 16px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.5;
+    word-wrap: break-word;    /* ✅ no overflow */
+    overflow-wrap: break-word;
+    animation: fade 1.5s ease;
+  }
+
+  @keyframes fade {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>🎂 Happy Birthday! 🎂</h1>
-    <p id="message">Tap the button 🎁</p>
-    <button onclick="showWish()">Open Gift</button>
+<div class="slideshow" id="slideshow"></div>
+
+<div class="center">
+  <h1 id="topText">👆 Click here</h1>
+
+  <button id="surpriseBtn">🎁 Surprise</button>
+
+  <div class="scene" id="scene">
+    <img src="images/knife.png" id="knife" class="knife">
+    <img src="images/cake.png" id="cake" class="cake">
   </div>
 
-  <script>
-    function showWish() {
-  document.getElementById("message").innerText =
-    "🎉 Wishing you a day full of smiles, surprises & happiness! 💖";
-}
+  <div class="quote" id="quote">
+    To the prettiest 💖<br>
+    Naughtiest 😈<br>
+    Craziest 🤪<br>
+    Little dumbest 😜<br>
+    The One who hates me more ,The Worstest 😆<br>
+    Yet my closest friend ❤️<br>
+    <strong>Happy Birthday 🎉</strong><br>
+    Never let your happiness fade away ✨<br>
+    Luv u lots but as a friend 😉
+  </div>
+</div>
 
-  </script>
+<script>
+  /* Slideshow */
+  const photos = [
+    "images/Sruthi1.jpg",
+    "images/Sruthi2.jpg",
+    "images/sruthi3.jpg",
+    "images/Sruthi4.jpg",
+    "images/sruthi7.jpg",
+    "images/sruthi6.jpg",
+    "images/sruthi5.jpg",
+    "images/sruthi8.jpg"
+  ];
+
+  let idx = 0;
+  const slideshow = document.getElementById("slideshow");
+  slideshow.style.backgroundImage = `url(${photos[0]})`;
+
+  setInterval(() => {
+    idx = (idx + 1) % photos.length;
+    slideshow.style.backgroundImage = `url(${photos[idx]})`;
+  }, 2000);
+
+  /* Elements */
+  const surpriseBtn = document.getElementById("surpriseBtn");
+  const scene = document.getElementById("scene");
+  const knife = document.getElementById("knife");
+  const cake = document.getElementById("cake");
+  const quote = document.getElementById("quote");
+  const topText = document.getElementById("topText");
+
+  surpriseBtn.onclick = () => {
+    surpriseBtn.style.display = "none";
+    scene.style.display = "block";
+    topText.innerText = "🔪 Drag the knife to cut the cake";
+
+    knife.style.top = "-50px"; // above text visually
+  };
+
+  let dragging = false;
+
+  knife.addEventListener("mousedown", startDrag);
+  knife.addEventListener("touchstart", startDrag);
+
+  function startDrag(e) {
+    dragging = true;
+    e.preventDefault();
+  }
+
+  document.addEventListener("mousemove", dragKnife);
+  document.addEventListener("touchmove", dragKnife);
+
+  function dragKnife(e) {
+    if (!dragging) return;
+
+    const rect = scene.getBoundingClientRect();
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+
+    knife.style.left = (x - rect.left) + "px";
+    knife.style.top = (y - rect.top) + "px";
+
+    checkCut();
+  }
+
+  document.addEventListener("mouseup", () => dragging = false);
+  document.addEventListener("touchend", () => dragging = false);
+
+  function checkCut() {
+    const k = knife.getBoundingClientRect();
+    const c = cake.getBoundingClientRect();
+
+    if (
+      k.right > c.left &&
+      k.left < c.right &&
+      k.bottom > c.top &&
+      k.top < c.bottom
+    ) {
+      cutCake();
+    }
+  }
+
+  function cutCake() {
+    dragging = false;
+    cake.src = "images/cake-cut.png";
+
+    setTimeout(partyPop, 300);
+
+    setTimeout(() => {
+      scene.style.display = "none";
+      topText.innerText = "🎉 Happy Birthday 🎉";
+      quote.style.display = "block";
+    }, 2000);
+  }
+
+  function partyPop() {
+    const colors = ["#ff4d6d","#ffd166","#06d6a0","#118ab2","#9b5de5","#f15bb5","#ffffff"];
+
+    for (let i = 0; i < 350; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = Math.random() * 100 + "vw";
+      const size = Math.random() * 6 + 6;
+      c.style.width = size + "px";
+      c.style.height = size * 1.4 + "px";
+      c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = Math.random() * 3 + 3 + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }
+  }
+</script>
+
 </body>
 </html>
